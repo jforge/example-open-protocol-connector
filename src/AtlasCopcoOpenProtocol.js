@@ -1,7 +1,7 @@
 const { EventEmitter } = require('events')
 
 class AtlasCopcoOpenProtocol extends EventEmitter {
-  constructor (params) {
+  constructor (options) {
     super()
   }
 
