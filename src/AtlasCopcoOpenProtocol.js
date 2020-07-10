@@ -17,7 +17,7 @@ class AtlasCopcoOpenProtocol extends EventEmitter {
 
     this._connection = {
       host: params.host,
-      port: params.port
+      port: params.port || 4545
     }
 
     this._options = Object.assign(defaultOptions, params.options)
