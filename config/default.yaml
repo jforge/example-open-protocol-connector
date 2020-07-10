@@ -1,0 +1,7 @@
+mqtt:
+  scheme: mqtt
+  host: broker
+  port: 1883
+vrpc:
+  domain: 'atlas-copco.vrpc'
+  agent: 'atlas-copco.open-protocol.connector'

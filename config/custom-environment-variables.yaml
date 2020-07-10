@@ -1,0 +1,9 @@
+mqtt:
+  scheme: CYBUS_MQTT_SCHEME
+  host: CYBUS_MQTT_HOST
+  port: CYBUS_MQTT_PORT
+  username: CYBUS_MQTT_USER
+  password: CYBUS_MQTT_PASSWORD
+vrpc:
+  domain: VRPC_DOMAIN
+  agent: VRPC_AGENT
