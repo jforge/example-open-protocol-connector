@@ -3,7 +3,7 @@
 ## About
 
 This project implements a connector for the Atlas Copco OpenProtocol.
-To use it you will need to commission a service with this image and making use of VRPC generic protocol interface. 
+To use it you will need to commission a service with this image and make use of VRPC generic protocol interface. 
 
 ## How to build it
 
