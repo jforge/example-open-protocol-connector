@@ -7,8 +7,8 @@ To use it you will need to commission a service with this image and make use of 
 
 ## How to build it
 
-`docker build -t open-protocol:0.1 .`
+`docker build -t registry.cybus.io/connectors/open-protocol-connector:0.1 .`
 
 ## How to run it
 
-`docker run -d --name openprotocol-connector --rm -e CYBUS_MQTT_USER=admin -e CYBUS_MQTT_PASSWORD=admin open-protocol:0.1`
+`docker run -d --name openprotocol-connector --rm -e CYBUS_MQTT_USER=admin -e CYBUS_MQTT_PASSWORD=admin registry.cybus.io/connectors/open-protocol-connector:0.1`

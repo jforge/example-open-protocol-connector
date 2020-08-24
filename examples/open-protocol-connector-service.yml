@@ -1,0 +1,262 @@
+description: !sub 'Atlas Copco Open Protocol Connector for device ${atlasCopcoDeviceId}'
+
+metadata:
+
+  name: Open Protocol Connector
+
+parameters:
+
+  atlasCopcoDeviceId:
+    type: string
+    description: ID or name of the Atlas Copco Device
+    default: myPowerFocus6000
+
+  atlasCopcoDeviceHost:
+    type: string
+    description: IP or hostname of the Atlas Copco device
+
+  atlasCopcoDevicePort:
+    type: integer
+    description: Port of the Atlas Copco device
+    default: 4545
+
+definitions:
+
+  vrpcDomain: atlas-copco.vrpc
+  vrpcAgent: atlas-copco.open-protocol.connector
+  vrpcClass: AtlasCopcoOpenProtocol
+
+resources:
+
+  openProtocolConnector:
+    type: Cybus::Container
+    properties:
+      image: registry.cybus.io/connectors/open-protocol-connector:0.1
+      environment:
+        CYBUS_MQTT_HOST: !ref Cybus::MqttHost
+        CYBUS_MQTT_PORT: !ref Cybus::MqttPort
+        CYBUS_MQTT_USER: !ref Cybus::MqttUser
+        CYBUS_MQTT_PASSWORD: !ref Cybus::MqttPassword
+        VRPC_DOMAIN: !ref vrpcDomain
+        VRPC_AGENT: !ref vrpcAgent
+      restart: unless-stopped
+
+  openProtocolConnection:
+    type: Cybus::Connection
+    properties:
+      protocol: GenericVrpc
+      connection:
+        vrpc:
+          domain: !ref vrpcDomain
+          agent: !ref vrpcAgent
+          className: !ref vrpcClass
+        args:
+          host: !ref atlasCopcoDeviceHost
+          port: !ref atlasCopcoDevicePort
+
+  psetSelected:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: psetSelected
+      subscribe:
+        name: psetSelected
+
+  lockAtBatchDoneUpload:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: lockAtBatchDoneUpload
+      subscribe:
+        name: lockAtBatchDoneUpload
+
+  jobInfo:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: jobInfo
+      subscribe:
+        name: jobInfo
+
+  vin:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: vin
+      subscribe:
+        name: vin
+
+  lastTightening:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: lastTightening
+      subscribe:
+        name: lastTightening
+
+  alarm:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: alarm
+      subscribe:
+        name: alarm
+
+  alarmStatus:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: alarmStatus
+      subscribe:
+        name: alarmStatus
+
+  alarmAcknowledged:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: alarmAcknowledged
+      subscribe:
+        name: alarmAcknowledged
+
+  multiSpindleStatus:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: multiSpindleStatus
+      subscribe:
+        name: multiSpindleStatus
+
+  multiSpindleResult:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: multiSpindleResult
+      subscribe:
+        name: multiSpindleResult
+
+  lastPowerMACSTighteningResultStationData:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: lastPowerMACSTighteningResultStationData
+      subscribe:
+        name: lastPowerMACSTighteningResultStationData
+
+  jobLineControl:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: jobLineControl
+      subscribe:
+        name: jobLineControl
+
+  multipleIdentifierResultParts:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: multipleIdentifierResultParts
+      subscribe:
+        name: multipleIdentifierResultParts
+
+  statusExternallyMonitoredInputs:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: statusExternallyMonitoredInputs
+      subscribe:
+        name: statusExternallyMonitoredInputs
+
+  relayFunction:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: relayFunction
+      subscribe:
+        name: relayFunction
+
+  digitalInputFunction:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: digitalInputFunction
+      subscribe:
+        name: digitalInputFunction
+
+  userData:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: userData
+      subscribe:
+        name: userData
+
+  selectorSocketInfo:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: selectorSocketInfo
+      subscribe:
+        name: selectorSocketInfo
+
+  toolTagID:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: toolTagID
+      subscribe:
+        name: toolTagID
+
+  automaticManualMode:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: automaticManualMode
+      subscribe:
+        name: automaticManualMode
+
+  openProtocolCommandsDisabled:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: openProtocolCommandsDisabled
+      subscribe:
+        name: openProtocolCommandsDisabled
+
+  motorTuningResultData:
+    type: Cybus::Endpoint
+    properties:
+      protocol: GenericVrpc
+      connection: !ref openProtocolConnection
+      topic: motorTuningResultData
+      subscribe:
+        name: motorTuningResultData
+
+  # this extends the defaultRole with more permissions!
+  defaultRole:
+    type: Cybus::Role
+    properties:
+      permissions:
+        - resource: '#'
+          operation: readWrite
+          context: mqtt
