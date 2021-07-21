@@ -20,7 +20,7 @@ class AtlasCopcoOpenProtocol extends EventEmitter {
       port: params.port || 4545
     }
 
-    this._options = Object.assign(defaultOptions, params.options)
+    this._options = { ...defaultOptions, ...params.options }
 
     this._subscriptions = new Map()
 
@@ -28,19 +28,41 @@ class AtlasCopcoOpenProtocol extends EventEmitter {
   }
 
   async connect () {
-    await new Promise(resolve => {
-      this._client = openProtocol.createClient(this._connection.host,
-        this._connection.port, this._options, (data) => {
-          resolve(data)
-        })
-    })
+    try {
+      this._client = openProtocol.createClient(
+        this._connection.host,
+        this._connection.port,
+        this._options,
+        this._onConnect.bind(this)) // We use bind here so that _onConnect is run on the context of 'this'
+
+      this._client.on('close', this._onClose.bind(this))
+      this._client.on('error', this._onError.bind(this))
+    } catch (err) {
+      this.emit('error', err)
+    }
+  }
+
+  _onConnect (data) {
     this._connected = true
     this.emit('connected')
   }
 
+  _onClose () {
+    this._connected = false
+    this.emit('connectLost')
+  }
+
+  _onError (err) {
+    this.emit('error', err)
+  }
+
   async disconnect () {
-    this._client.close()
-    this._client = undefined
+    if (this._client) {
+      this._client.removeAllListeners('close')
+      this._client.removeAllListeners('error')
+      this._client.close()
+      this._client = undefined
+    }
     this._connected = false
     this.emit('disconnected')
   }
@@ -52,7 +74,7 @@ class AtlasCopcoOpenProtocol extends EventEmitter {
   async subscribe ({ name }, id) {
     if (this._subscriptions.has(id)) return
     if (!name) throw new Error('The endpoint address should contain a name.')
-    
+
     const callback = (data) => this.emit(id, data)
 
     this._subscriptions.set(id, {
